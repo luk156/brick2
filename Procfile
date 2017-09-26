@@ -1,0 +1,1 @@
+web: gunicorn brick2.wsgi --log-file -
