@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mptt',
     'ore',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
