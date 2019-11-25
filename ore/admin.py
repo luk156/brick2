@@ -22,7 +22,6 @@ class CantiereAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Cliente)
-admin.site.register(Cantiere)
 admin.site.register(Dipendente)
 admin.site.register(Attivita)
 admin.site.register(CategoriaAttivita, MPTTModelAdmin)
