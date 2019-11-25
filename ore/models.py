@@ -56,18 +56,17 @@ class Cantiere(models.Model):
 
     def ore_preventivo(self):
         res = 0
-        for sc in self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=False):
-            res += sc.attivita_svolte.filter(schedaattivita__ext_preventivo=False).aggregate(Sum('schedaattivita__ore'))['schedaattivita__ore__sum']
+        for sc in self.cantiere_scheda.all():
+            res += SchedaAttivita.objects.filter(ext_preventivo=False, scheda=sc).aggregate(Sum('ore'))['ore__sum'] or 0
         return res
 
     def ore_extra_preventivo(self):
         res = 0
-        for sc in self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=True):
-            res += \
-            sc.attivita_svolte.filter(schedaattivita__ext_preventivo=False).aggregate(Sum('schedaattivita__ore'))[
-                'schedaattivita__ore__sum']
+        for sc in self.cantiere_scheda.all():
+            res += SchedaAttivita.objects.filter(ext_preventivo=True, scheda=sc).aggregate(Sum('ore'))[
+                       'ore__sum'] or 0
         return res
-    
+
     def __str__(self):
         return '%s' % (self.descrizione)
 
