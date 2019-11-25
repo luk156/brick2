@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from mptt.admin import MPTTModelAdmin
 
 from ore.models import Cliente, Cantiere, Dipendente, Attivita, SchedaLavoro, CategoriaAttivita, SchedaAttivita
@@ -17,13 +16,13 @@ class SchedaLavoroAdmin(admin.ModelAdmin):
     ]
 
 
+@admin.register(Cantiere)
+class CantiereAdmin(admin.ModelAdmin):
+    list_display = ('cliente', 'indirizzo', 'descrizione', 'ore_preventivo', 'ore_extra_preventivo',)
+
+
 admin.site.register(Cliente)
 admin.site.register(Cantiere)
 admin.site.register(Dipendente)
 admin.site.register(Attivita)
-admin.site.register(CategoriaAttivita,MPTTModelAdmin)
-
-
-
-
-
+admin.site.register(CategoriaAttivita, MPTTModelAdmin)
