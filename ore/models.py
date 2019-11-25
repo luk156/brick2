@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.db.models import Sum
 # Create your models here.
@@ -53,10 +55,10 @@ class Cantiere(models.Model):
     cliente = models.ForeignKey(Cliente, related_name='cliente_cantiere')
 
     def ore_preventivo(self):
-        return self.cantiere_scheda.filter(ext_preventivo=False).aggregate(Sum('ore'))['ore__sum']
+        return self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=False).aggregate(Sum('attivita_svolte__schedaattivita__ore'))['attivita_svolte__schedaattivita__ore__sum']
 
     def ore_extra_preventivo(self):
-        return self.cantiere_scheda.filter(ext_preventivo=True).aggregate(Sum('ore'))['ore__sum']
+        return self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=True).aggregate(Sum('attivita_svolte__schedaattivita__ore'))['attivita_svolte__schedaattivita__ore__sum']
 
     def __str__(self):
         return '%s' % (self.descrizione)
