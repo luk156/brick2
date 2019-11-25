@@ -55,11 +55,19 @@ class Cantiere(models.Model):
     cliente = models.ForeignKey(Cliente, related_name='cliente_cantiere')
 
     def ore_preventivo(self):
-        return self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=False).aggregate(Sum('attivita_svolte__schedaattivita__ore'))['attivita_svolte__schedaattivita__ore__sum']
+        res = 0
+        for sc in self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=False):
+            res += sc.attivita_svolte.filter(schedaattivita__ext_preventivo=False).aggregate(Sum('schedaattivita__ore'))['schedaattivita__ore__sum']
+        return res
 
     def ore_extra_preventivo(self):
-        return self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=True).aggregate(Sum('attivita_svolte__schedaattivita__ore'))['attivita_svolte__schedaattivita__ore__sum']
-
+        res = 0
+        for sc in self.cantiere_scheda.filter(attivita_svolte__schedaattivita__ext_preventivo=True):
+            res += \
+            sc.attivita_svolte.filter(schedaattivita__ext_preventivo=False).aggregate(Sum('schedaattivita__ore'))[
+                'schedaattivita__ore__sum']
+        return res
+    
     def __str__(self):
         return '%s' % (self.descrizione)
 
